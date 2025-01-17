@@ -54,7 +54,7 @@ namespace ClientServerLib
 				{
 					lock (this.items)
 					{
-						Log(LogLib.Message.Information($"Enqueue new message"));
+						Log(LogLib.Message.Debug($"Enqueue new message"));
 						items.Enqueue(serializedData);
 					}
 					if (State == ModuleStates.Started) changedEvent.Set();

@@ -44,7 +44,8 @@ namespace ClientServerLib
 						Log(Message.Warning($"Invalid message ID, ignoring answer"));
 						return;
 					}
-					Session.Delay = DateTime.Now - lastTimeStamp;
+					Session.LastCommunication = DateTime.Now;
+					Session.Delay = Session.LastCommunication - lastTimeStamp;
 					Log(Message.Debug($"Ping delay: {Session.Delay}"));
 
 					break;

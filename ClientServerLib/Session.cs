@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -35,6 +36,11 @@ namespace ClientServerLib
 			set;
 		}
 
+		public DateTime LastCommunication
+		{
+			get;
+			set;
+		}
 
 		public Session()
 		{
