@@ -6,9 +6,6 @@ using System.Threading.Tasks;
 
 namespace ClientServerLib
 {
-	public interface ISenderModule
-	{
-		void Enqueue(SessionMessage Message);
-
-	}
+	public enum SessionMessageTypes { Request,Response };
+	
 }

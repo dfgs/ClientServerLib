@@ -29,6 +29,13 @@ namespace ClientServerLib
 			set;
 		}
 
+		public TimeSpan Delay
+		{
+			get;
+			set;
+		}
+
+
 		public Session()
 		{
 			sid++;SessionID = sid;

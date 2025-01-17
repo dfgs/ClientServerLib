@@ -17,8 +17,9 @@ namespace ClientServerLib
 		private readonly Queue<string> items;
 
 		private AutoResetEvent changedEvent;
-		
-		public SenderModule(ILogger Logger, Session Session) : base(Logger, Session)
+		private ISessionMessageSerializer serializer;
+
+		public SenderModule(ILogger Logger, Session Session, ISessionMessageSerializer Serializer) : base(Logger, Session)
 		{
 			writer = null;
 
@@ -26,6 +27,7 @@ namespace ClientServerLib
 			changedEvent = new AutoResetEvent(false);
 			Log(Message.Debug("Create events list"));
 			items = new Queue<string>();
+			this.serializer = Serializer;
 		}
 
 		protected override IResult<bool> OnStarting()
@@ -35,7 +37,7 @@ namespace ClientServerLib
 				(ex) => ex
 			);
 		}
-		public void Enqueue(string Message)
+		public void Enqueue(SessionMessage Message)
 		{
 
 			LogEnter();
@@ -45,12 +47,22 @@ namespace ClientServerLib
 				return;
 			}
 
-			lock (this.items)
-			{
-                Log(LogLib.Message.Information($"Enqueue new message"));
-				items.Enqueue(Message);
-			}
-			if (State == ModuleStates.Started) changedEvent.Set();
+			Log(LogLib.Message.Debug($"Serialize message"));
+			serializer.Serialize(Message).Match
+			(
+				(serializedData) =>
+				{
+					lock (this.items)
+					{
+						Log(LogLib.Message.Information($"Enqueue new message"));
+						items.Enqueue(serializedData);
+					}
+					if (State == ModuleStates.Started) changedEvent.Set();
+				},
+				(ex) => Log(ex)
+			);
+
+			
 		}
 
 		private IResult<bool> OnTriggerEvent(string Item)
@@ -64,7 +76,7 @@ namespace ClientServerLib
 			}
 			try
 			{
-				writer.WriteLine(Item); writer.Flush();
+				writer.WriteLine(Item);writer.WriteLine(); writer.Flush();
 				return Result.Success(true);
 			}
 			catch (IOException)

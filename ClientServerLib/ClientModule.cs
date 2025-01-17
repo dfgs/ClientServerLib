@@ -101,9 +101,9 @@ namespace ClientServerLib
 				if (success)
 				{
 					session=new Session() { PingPeriod=pingPeriod, TcpClient=tcpClient };
-					senderModule=new SenderModule(Logger, session);
+					senderModule=new SenderModule(Logger, session, new SessionMessageSerializer(Logger));
 					receiverModule=new ReceiverModule(Logger, session);
-					messageManagerModule=new MessageManagerModule(Logger, session,receiverModule);
+					messageManagerModule=new MessageManagerModule(Logger, session,receiverModule, new SessionMessageDeserializer(Logger) );
 					pingModule = new PingModule(Logger, session,senderModule,messageManagerModule);
 					
 					Log(Message.Debug("Client connected, starting modules"));

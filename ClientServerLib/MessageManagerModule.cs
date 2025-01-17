@@ -12,19 +12,26 @@ namespace ClientServerLib
 	public class MessageManagerModule : SessionModule, IMessageManagerModule
 	{
 		private IReceiverModule receiverModule;
+		private ISessionMessageDeserializer sessionMessageDeserializer;
 
-		public event MessageReceivedEventHandler? PingReceived;
+		public event SessionMessageReceivedEventHandler? PingReceived;
 
-		public MessageManagerModule(ILogger Logger, Session Session, IReceiverModule ReceiverModule ) : base(Logger,Session)
+		public MessageManagerModule(ILogger Logger, Session Session, IReceiverModule ReceiverModule, ISessionMessageDeserializer SessionMessageDeserializer) : base(Logger,Session)
 		{
 			this.receiverModule = ReceiverModule;
+			this.sessionMessageDeserializer = SessionMessageDeserializer;
 			this.receiverModule.MessageReceived += ReceiverModule_MessageReceived;
 		}
 
 		private void ReceiverModule_MessageReceived(string Content)
 		{
+			SessionMessage? message=null;
+
 			Log(Message.Debug($"Processing new message: {Content}"));
-			if ((Content == "Ping") && (PingReceived != null)) PingReceived(Content);
+			sessionMessageDeserializer.Deserialize(Content).Match((m) => message = m,(ex)=> Log(ex));
+			if (message == null) return;
+
+			if ((message.Method == "Ping") && (PingReceived != null)) PingReceived(message);
 		}
 
 		protected override void ThreadLoop()

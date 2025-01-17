@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace ClientServerLib
 {
+	public delegate void SessionMessageReceivedEventHandler(SessionMessage Message);
 
 	public interface IMessageManagerModule
 	{
-		event MessageReceivedEventHandler? PingReceived;
+		event SessionMessageReceivedEventHandler? PingReceived;
 
 
 	}

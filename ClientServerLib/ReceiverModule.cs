@@ -32,10 +32,42 @@ namespace ClientServerLib
 			);
 		}
 		
+		private IResult<string> ReadMessage()
+		{
+			string? line;
+			string message="";
+
+			if (reader == null) return Result.Fail<string>(CreateException("Reader is not initialized"));
+
+			if (!Session.TcpClient.Connected)
+			{
+				Log(Message.Warning("TCP client is not connected"));
+				return Result.Fail<string>(CreateException("TCP client is not connected"));
+			}
+
+			while (true)
+			{
+				try
+				{
+					line = reader.ReadLine();
+					if (string.IsNullOrEmpty(line)) return Result.Success(message);
+					message += line;
+				}
+				catch (IOException ex)
+				{
+					Log(Message.Warning("TCP client has been closed"));
+					return Result.Fail<string>(ex);
+				}
+				catch (Exception ex)
+				{
+					Log(ex);
+					return Result.Fail<string>(ex);
+				}
+			}
+		}
 
 		protected override void ThreadLoop()
 		{
-			string? message;
 
 			if (reader == null)
 			{
@@ -45,26 +77,19 @@ namespace ClientServerLib
 			while (State == ModuleStates.Started)
 			{
 				Log(Message.Debug("Waiting data input"));
-				try
-				{
-					message=reader.ReadLine();
-					if (message == null)
+				
+				ReadMessage().Match(
+					(message) =>
 					{
-						Log(Message.Warning("Empty message received, TCP client may be closed"));
-						WaitHandles(1000, QuitEvent);
-					}
-					else if (MessageReceived != null) MessageReceived(message);
-				}
-				catch (IOException)
-				{
-					Log(Message.Warning("TCP client has been closed"));
-					WaitHandles(-1, QuitEvent);
-				}
-				catch (Exception ex)
-				{
-					Log(CreateException("An error occured in data reception, waiting stop event for module", ex));
-					WaitHandles(-1, QuitEvent);
-				}
+						if (string.IsNullOrEmpty(message))
+						{
+							Log(Message.Warning("Empty message received, TCP client may be closed"));
+							WaitHandles(1000, QuitEvent);
+						}
+						else if (MessageReceived != null) MessageReceived(message);
+					},
+					(ex) => WaitHandles(-1, QuitEvent)
+				);
 				
 			}
 
