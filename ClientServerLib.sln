@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerConsole", "ServerCons
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientConsole", "ClientConsole\ClientConsole.csproj", "{9CBFE027-80D5-4507-B207-B75C936ED341}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogLib", "..\LogLib\LogLib\LogLib.csproj", "{145D67E7-85A0-400B-A1A3-DB060C658E83}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModuleLib", "..\ModuleLib\ModuleLib\ModuleLib.csproj", "{6739684A-BA38-4E7D-B9D7-CBB4C209F1EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,9 +33,21 @@ Global
 		{9CBFE027-80D5-4507-B207-B75C936ED341}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CBFE027-80D5-4507-B207-B75C936ED341}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CBFE027-80D5-4507-B207-B75C936ED341}.Release|Any CPU.Build.0 = Release|Any CPU
+		{145D67E7-85A0-400B-A1A3-DB060C658E83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{145D67E7-85A0-400B-A1A3-DB060C658E83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{145D67E7-85A0-400B-A1A3-DB060C658E83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{145D67E7-85A0-400B-A1A3-DB060C658E83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6739684A-BA38-4E7D-B9D7-CBB4C209F1EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6739684A-BA38-4E7D-B9D7-CBB4C209F1EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6739684A-BA38-4E7D-B9D7-CBB4C209F1EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6739684A-BA38-4E7D-B9D7-CBB4C209F1EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{145D67E7-85A0-400B-A1A3-DB060C658E83} = {1095948B-07B4-46B3-A7FC-079592E39B9F}
+		{6739684A-BA38-4E7D-B9D7-CBB4C209F1EC} = {1095948B-07B4-46B3-A7FC-079592E39B9F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {42FDB781-D60A-48A1-B3A5-A0B62B21A33A}
