@@ -37,5 +37,10 @@ namespace ClientServerLib
 			set; 
 		}
 
+		public SessionMessage ToResponse()
+		{
+			return new SessionMessage() { MessageID = MessageID, MessageType = SessionMessageTypes.Response, Method = Method };
+		}
+
 	}
 }

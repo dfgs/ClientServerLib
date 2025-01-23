@@ -17,7 +17,7 @@ namespace ClientServerLib
 		private int lastMessageID = 0;
 		private DateTime lastTimeStamp;
 
-		public PingModule(ILogger Logger, Session Session, ISenderModule SenderModule, IMessageManagerModule MessageManagerModule) : base(Logger,Session)
+		public PingModule(ILogger Logger, ISession Session, ISenderModule SenderModule, IMessageManagerModule MessageManagerModule) : base(Logger,Session)
 		{
 			this.senderModule = SenderModule;
 			this.messageManagerModule = MessageManagerModule;
