@@ -10,13 +10,13 @@ namespace ClientServerLib
 {
 	public abstract class SessionModule : ThreadModule, ISessionModule
 	{
-		public Session Session
+		public ISession Session
 		{
 			get;
 			private set;
 		}
 
-		protected SessionModule(ILogger Logger, Session Session ) : base(Logger)
+		protected SessionModule(ILogger Logger, ISession Session ) : base(Logger)
 		{
 			this.Session = Session;
 		}

@@ -8,7 +8,7 @@ namespace ClientServerLib
 {
 	public interface ISessionModule
 	{
-		Session Session
+		ISession Session
 		{
 			get;
 		}

@@ -18,7 +18,7 @@ namespace ClientServerLib
 
 		public event MessageReceivedEventHandler? MessageReceived;
 
-		public ReceiverModule(ILogger Logger, Session Session) : base(Logger, Session)
+		public ReceiverModule(ILogger Logger, ISession Session) : base(Logger, Session)
 		{
 			reader = null;
 			
@@ -26,7 +26,7 @@ namespace ClientServerLib
 
 		protected override IResult<bool> OnStarting()
 		{
-			return Try(() => Session.TcpClient.GetStream()).Select(
+			return Try(() => Session.GetStream()).Select(
 				(s) => { reader = new StreamReader(s, Encoding.UTF8); return true; },
 				(ex) => ex
 			);
@@ -39,7 +39,7 @@ namespace ClientServerLib
 
 			if (reader == null) return Result.Fail<string>(CreateException("Reader is not initialized"));
 
-			if (!Session.TcpClient.Connected)
+			if (!Session.IsConnected)
 			{
 				Log(Message.Warning("TCP client is not connected"));
 				return Result.Fail<string>(CreateException("TCP client is not connected"));

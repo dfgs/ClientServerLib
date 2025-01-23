@@ -16,7 +16,7 @@ namespace ClientServerLib
 
 		public event SessionMessageReceivedEventHandler? PingReceived;
 
-		public MessageManagerModule(ILogger Logger, Session Session, IReceiverModule ReceiverModule, ISessionMessageDeserializer SessionMessageDeserializer) : base(Logger,Session)
+		public MessageManagerModule(ILogger Logger, ISession Session, IReceiverModule ReceiverModule, ISessionMessageDeserializer SessionMessageDeserializer) : base(Logger,Session)
 		{
 			this.receiverModule = ReceiverModule;
 			this.sessionMessageDeserializer = SessionMessageDeserializer;

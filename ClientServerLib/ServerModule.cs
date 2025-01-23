@@ -49,7 +49,7 @@ namespace ClientServerLib
 			{
 				try
 				{
-					module.Session.TcpClient.Close();
+					module.Session.Close();
 				}
 				catch { }
 			}

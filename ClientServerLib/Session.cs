@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ClientServerLib
 {
-	public class Session
+	public class Session:ISession
 	{
 		private static int sid = 0;
 
@@ -41,11 +41,26 @@ namespace ClientServerLib
 			get;
 			set;
 		}
+		public bool IsConnected
+		{
+			get => TcpClient.Connected;
+		}
 
 		public Session()
 		{
 			sid++;SessionID = sid;
 		}
-		
+
+		public Stream GetStream()
+		{
+			return TcpClient.GetStream();
+		}
+
+		public void Close()
+		{
+			TcpClient.Close();
+		}
+
+
 	}
 }

@@ -19,7 +19,7 @@ namespace ClientServerLib
 		private AutoResetEvent changedEvent;
 		private ISessionMessageSerializer serializer;
 
-		public SenderModule(ILogger Logger, Session Session, ISessionMessageSerializer Serializer) : base(Logger, Session)
+		public SenderModule(ILogger Logger, ISession Session, ISessionMessageSerializer Serializer) : base(Logger, Session)
 		{
 			writer = null;
 
@@ -32,7 +32,7 @@ namespace ClientServerLib
 
 		protected override IResult<bool> OnStarting()
 		{
-			return Try(() => Session.TcpClient.GetStream()).Select(
+			return Try(() => Session.GetStream()).Select(
 				(s) => { writer=new StreamWriter(s,Encoding.UTF8); return true; },
 				(ex) => ex
 			);
@@ -69,7 +69,7 @@ namespace ClientServerLib
 		{
 			if (writer == null) return Result.Fail<bool>(CreateException("Writer is not initialized"));
 
-			if (!Session.TcpClient.Connected)
+			if (!Session.IsConnected)
 			{
 				Log(Message.Warning("TCP client is not connected, ignoring event"));
 				return Result.Success(true);
